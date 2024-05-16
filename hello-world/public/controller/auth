@@ -1,5 +1,5 @@
 const firebaseConfig = {
-// please contact me for the config inforamtion
+    // please refer to the config in teams
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -71,24 +71,26 @@ function testPrintInfo(){
     })
 }
 
+// please refer to updateUserInfoInbottom()
 // 更新用戶數據 (名字, 大頭照 url)
-function updateUserInfo(displayName, photoUrl) {
-    retUserInfo().then(user => {
-        user.updateProfile({
-            displayName: displayName,
-            photoURL: photoUrl
-        }).then(function() {
-            // Update successful.
-            console.log("User profile updated successfully.");
-        }).catch(function(error) {
-            // An error happened.
-            console.error("Error updating user profile:", error);
-        });
-    }).catch(error => {
-        console.error(error);
-    });
-}
+// function updateUserInfo(displayName, photoUrl) {
+//     retUserInfo().then(user => {
+//         user.updateProfile({
+//             displayName: displayName,
+//             photoURL: photoUrl
+//         }).then(function() {
+//             // Update successful.
+//             console.log("User profile updated successfully.");
+//         }).catch(function(error) {
+//             // An error happened.
+//             console.error("Error updating user profile:", error);
+//         });
+//     }).catch(error => {
+//         console.error(error);
+//     });
+// }
 
+// x
 // 登入後 才可呼叫
 // 請勿單獨呼叫, 需要的情境已經包裝好了
 async function reAuth(password) {
@@ -150,7 +152,8 @@ async function isEmailVerified() {
     }
 }
 
-// 寄送驗證信
+// x
+// 寄送驗證信 不需要
 function verifyEmail() {
     var user = firebase.auth().currentUser;
 
@@ -175,3 +178,23 @@ function forgetUser(emailAddress) {
         console.log(error.message)
     });
 }
+
+
+class UserInfo {
+    constructor(username, avatar, into) {
+        this.username = "Anon",
+        this.avatarURL = "/public/assets/image/defaultAvatar.jpeg",
+        this.intro = "I have something to say...";
+    }
+}
+
+function updateUserDB(username = "Anon", avatar = "/public/assets/image/defaultAvatar.jpeg", intro = "I have something to say..."){
+    retUserInfo().then(user => {
+        const path = "/users/" + user.uid;
+        const newUser = new UserInfo(username, avatar, intro);
+        const dbRef = firebase.database().ref(path);
+        dbRef.set(newUser);
+        console.log("success")
+    });
+}
+
