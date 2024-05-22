@@ -1,11 +1,3 @@
-const config = {
-    authDomain: "project-20240429",
-    databaseURL: "https://project-20240429-default-rtdb.firebaseio.com/",
-    projectId: "project-20240429",
-}
-firebase.initializeApp(config);
-
-
 class User {
     constructor(email, pwd) {
         this.username = "Anon",
@@ -19,7 +11,7 @@ class User {
 
 // register: register using set
 function register(email, pwd) {
-    const path = "/users/" + email.replace(".", ",");
+    const path = "/userCred/" + email.replace(".", ",");
     const newUser = new User(email, pwd);
     const dbRef = firebase.database().ref(path);
     return dbRef.set(newUser);
@@ -35,7 +27,7 @@ async function isValid(email, loginPwd){
 // return user information
 // to render on the personal page
 async function getUser(email){
-    const path = "/users/" + email.replace(".", ",");
+    const path = "/userCred/" + email.replace(".", ",");
     const snapshot = await firebase.database().ref(path).once('value');
     const user = snapshot.val();
     return user;
